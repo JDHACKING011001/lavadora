@@ -115,7 +115,7 @@ void centrifugado() {
     while (digitalRead(start) == LOW);
     delay(100);
 
-    //EL CENTRIFUGADO DURA 1MIN 10SEG
+    //EL CENTRIFUGADO DURA 3MIN 
 
     digitalWrite(door_lock, HIGH);
     delay(500);
@@ -129,14 +129,14 @@ void centrifugado() {
     digitalWrite(velocidad3, HIGH);
 
     digitalWrite(motor_reversa, HIGH);
-    delay(10000);
+    delay(20000);//20seg
 
     digitalWrite(velocidad1, HIGH);
     digitalWrite(velocidad2, HIGH);
     digitalWrite(velocidad3, LOW);
 
     digitalWrite(motor_reversa, HIGH);
-    delay(90000);
+    delay(160000);//160seg
     digitalWrite(motor_reversa, LOW);
 
     // digitalWrite(vaciado, LOW);
@@ -264,12 +264,12 @@ void ciclo_normal () {
     digitalWrite(velocidad2, LOW);
     digitalWrite(velocidad3, HIGH);
     digitalWrite(motor_reversa, HIGH);
-    delay(10000);
+    delay(20000);//20seg
     digitalWrite(velocidad1, HIGH);
     digitalWrite(velocidad2, HIGH);
     digitalWrite(velocidad3, LOW);
     digitalWrite(motor_reversa, HIGH);
-    delay(90000);
+    delay(160000);//160seg
     digitalWrite(motor_reversa, LOW);
 
     delay(500);
@@ -417,12 +417,12 @@ void ciclo_delicado () {
     digitalWrite(velocidad2, LOW);
     digitalWrite(velocidad3, HIGH);
     digitalWrite(motor_reversa, HIGH);
-    delay(10000);
+    delay(20000);//20seg
     digitalWrite(velocidad1, HIGH);
     digitalWrite(velocidad2, HIGH);
     digitalWrite(velocidad3, LOW);
     digitalWrite(motor_reversa, HIGH);
-    delay(90000);
+    delay(160000);//160seg
     digitalWrite(motor_reversa, LOW);
 
     delay(500);
@@ -544,12 +544,12 @@ void ciclo_hard () {
     digitalWrite(velocidad2, LOW);
     digitalWrite(velocidad3, HIGH);
     digitalWrite(motor_reversa, HIGH);
-    delay(10000);
+    delay(20000);//20seg
     digitalWrite(velocidad1, HIGH);
     digitalWrite(velocidad2, HIGH);
     digitalWrite(velocidad3, LOW);
     digitalWrite(motor_reversa, HIGH);
-    delay(90000);
+    delay(160000);//160seg
     digitalWrite(motor_reversa, LOW);
 
     delay(500);
