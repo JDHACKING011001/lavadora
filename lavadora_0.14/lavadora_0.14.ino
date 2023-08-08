@@ -7,38 +7,38 @@
   ======================================================*/
 
 
-const int velocidad1 = 6; // velocidades para el motor
-const int velocidad2 = 5; //           ""
-const int velocidad3 = 4; //           ""
+const int velocidad1 = 6;  // velocidades para el motor
+const int velocidad2 = 5;  //           ""
+const int velocidad3 = 4;  //           ""
 
-const int motor_adelante = 3; // direccion del motor
-const int motor_reversa = 2; //          ""
+const int motor_adelante = 3;  // direccion del motor
+const int motor_reversa = 2;   //          ""
 
 //=========================ENTRADAS===========================//
 
-const int nivel_agua1 = 7; //sensor de nivel de agua
-const int nivel_agua2 = 8; //         ""
-const int nivel_agua3 = 9; //         ""
+const int nivel_agua1 = 7;  //sensor de nivel de agua
+const int nivel_agua2 = 8;  //         ""
+const int nivel_agua3 = 9;  //         ""
 
-const int start = 10; //boton para iniciar ciclo
+const int start = 10;  //boton para iniciar ciclo
 
-const int select_ciclo = 11; //boton del selecion de ciclo
+const int select_ciclo = 11;  //boton del selecion de ciclo
 
 //============================================================//
 
 const int door_lock = 13;
-const int agua_caliente = A0; // valvula de agua fria
-const int agua_fria = A1; // valvula de agua caliente
-const int vaciado = A2; // drenaje
+const int agua_caliente = A0;  // valvula de agua fria
+const int agua_fria = A1;      // valvula de agua caliente
+const int vaciado = A2;        // drenaje
 
 
-const int led_indicador1 = A3; //led indicador hard
-const int led_indicador2 = A4; //led indicador normal
-const int led_indicador3 = A5; //led indicador suave
-const int led_indicador4 = 12; //led indicador centrifugado
-const int led_start = 0; //led indicador start
+const int led_indicador1 = A3;  //led indicador hard
+const int led_indicador2 = A4;  //led indicador normal
+const int led_indicador3 = A5;  //led indicador suave
+const int led_indicador4 = 12;  //led indicador centrifugado
+const int led_start = 0;        //led indicador start
 
-int num_ciclo = 0; //esta varible sirve para reconocer que ciclo es el que se esta pulsando//
+int num_ciclo = 0;  //esta varible sirve para reconocer que ciclo es el que se esta pulsando//
 
 //PINES SOBRANTES:
 
@@ -69,8 +69,6 @@ void setup() {
 
   pinMode(select_ciclo, INPUT_PULLUP);
   pinMode(start, INPUT_PULLUP);
-
-
 }
 
 void loop() {
@@ -83,9 +81,10 @@ void loop() {
   if (digitalRead(select_ciclo) == LOW) {
 
     delay(100);
-    while (digitalRead(select_ciclo) == LOW);
+    while (digitalRead(select_ciclo) == LOW)
+      ;
     delay(100);
-    num_ciclo ++;
+    num_ciclo++;
 
     if (num_ciclo > 4) {
       num_ciclo = 0;
@@ -102,7 +101,6 @@ void loop() {
   ciclo_normal();
   ciclo_hard();
   centrifugado();
-
 }
 
 //--------ciclo de centrifugado--------//
@@ -112,10 +110,11 @@ void centrifugado() {
   if (num_ciclo == 4 and digitalRead(start) == LOW) {
 
     delay(100);
-    while (digitalRead(start) == LOW);
+    while (digitalRead(start) == LOW)
+      ;
     delay(100);
 
-    //EL CENTRIFUGADO DURA 3MIN 
+    //EL CENTRIFUGADO DURA 1MIN 10SEG
 
     digitalWrite(door_lock, HIGH);
     delay(500);
@@ -127,16 +126,12 @@ void centrifugado() {
     digitalWrite(velocidad1, LOW);
     digitalWrite(velocidad2, LOW);
     digitalWrite(velocidad3, HIGH);
-
     digitalWrite(motor_reversa, HIGH);
-    delay(20000);//20seg
-
+    delay(20000);
     digitalWrite(velocidad1, HIGH);
     digitalWrite(velocidad2, HIGH);
     digitalWrite(velocidad3, LOW);
-
-    digitalWrite(motor_reversa, HIGH);
-    delay(160000);//160seg
+    delay(160000);
     digitalWrite(motor_reversa, LOW);
 
     // digitalWrite(vaciado, LOW);
@@ -156,8 +151,9 @@ void centrifugado() {
 
     digitalWrite(door_lock, LOW);
 
-    return;
+    
   }
+  return;
 }
 
 /*=====================================================
@@ -167,13 +163,14 @@ void centrifugado() {
   ========       CICLO NORMAL       ========
   ==========================================*/
 
-void ciclo_normal () {
+void ciclo_normal() {
 
 
   if (num_ciclo == 2 and digitalRead(start) == LOW) {
 
     delay(100);
-    while (digitalRead(start) == LOW);
+    while (digitalRead(start) == LOW)
+      ;
     delay(100);
 
     digitalWrite(door_lock, HIGH);
@@ -182,10 +179,9 @@ void ciclo_normal () {
 
     //EL CICLO NORMAL SE LLENA SOLO CON AGUA FRIA HASTA QUE LLEGUE AL NIVEL 3 DE AGUA.
 
-    for (int x = 0; x < 5; x++) {
+    while (true) {
 
       digitalWrite(agua_fria, HIGH);
-      x = 0;
 
       if ((digitalRead(nivel_agua1) == LOW) and (digitalRead(nivel_agua2) == LOW) and (digitalRead(nivel_agua3) == LOW)) {
         digitalWrite(agua_fria, LOW);
@@ -216,15 +212,14 @@ void ciclo_normal () {
       delay(12000);
       digitalWrite(motor_reversa, LOW);
       delay(3000);
-
     }
 
     delay(3000);
 
     //Vaciando para enjuagar
 
-    for (int v = 0; v < 5; v++ ) {
-      v = 0;
+    while (true) {
+
       digitalWrite(vaciado, LOW);
 
       if ((digitalRead(nivel_agua1) == HIGH) and (digitalRead(nivel_agua2) == HIGH) and (digitalRead(nivel_agua3) == HIGH)) {
@@ -243,8 +238,8 @@ void ciclo_normal () {
 
     //Vaciando para centrifugar
 
-    for (int v = 0; v < 5; v++ ) {
-      v = 0;
+    while (true) {
+
       digitalWrite(vaciado, LOW);
 
       if ((digitalRead(nivel_agua1) == HIGH) and (digitalRead(nivel_agua2) == HIGH) and (digitalRead(nivel_agua3) == HIGH)) {
@@ -253,7 +248,7 @@ void ciclo_normal () {
     }
 
 
-    delay(15000);
+    delay(5000);
 
     /*==============CENTRIFUGADO==============*/
 
@@ -264,12 +259,11 @@ void ciclo_normal () {
     digitalWrite(velocidad2, LOW);
     digitalWrite(velocidad3, HIGH);
     digitalWrite(motor_reversa, HIGH);
-    delay(20000);//20seg
+    delay(20000);
     digitalWrite(velocidad1, HIGH);
     digitalWrite(velocidad2, HIGH);
     digitalWrite(velocidad3, LOW);
-    digitalWrite(motor_reversa, HIGH);
-    delay(160000);//160seg
+    delay(160000);
     digitalWrite(motor_reversa, LOW);
 
     delay(500);
@@ -302,13 +296,14 @@ void ciclo_normal () {
   ========     CICLO DELICADO       ========
   ==========================================*/
 
-void ciclo_delicado () {
+void ciclo_delicado() {
 
 
   if (num_ciclo == 3 and digitalRead(start) == LOW) {
 
     delay(100);
-    while (digitalRead(start) == LOW);
+    while (digitalRead(start) == LOW)
+      ;
     delay(100);
 
     digitalWrite(door_lock, HIGH);
@@ -317,11 +312,10 @@ void ciclo_delicado () {
 
     //SE ABREN LAS DOS VALVULAS DE AGUA AL MISMO TIEMPO
 
-    for (int x = 0; x < 5; x++) {
+    while (true) {
 
       digitalWrite(agua_fria, HIGH);
       digitalWrite(agua_caliente, HIGH);
-      x = 0;
 
       //CUANDO EL AGUA LLEGUE AL NIVEL 1 SE CIERRA EL AGUA CALIENTE ...
 
@@ -333,10 +327,9 @@ void ciclo_delicado () {
 
     //Y SE TERMINA DE RELLENAR CON AGUA FRIA HASTA EL NIVEL 2
 
-    for (int x = 0; x < 5; x++) {
+    while (true) {
 
       digitalWrite(agua_fria, HIGH);
-      x = 0;
 
       if ((digitalRead(nivel_agua1) == LOW) and (digitalRead(nivel_agua2) == LOW) and (digitalRead(nivel_agua3) == HIGH)) {
         digitalWrite(agua_fria, LOW);
@@ -368,15 +361,13 @@ void ciclo_delicado () {
       delay(12000);
       digitalWrite(motor_reversa, LOW);
       delay(3000);
-
     }
 
     delay(5000);
 
     //Vaciando para enjuagar
 
-    for (int v = 0; v < 5; v++ ) {
-      v = 0;
+    while (true) {
       digitalWrite(vaciado, LOW);
 
       if ((digitalRead(nivel_agua1) == HIGH) and (digitalRead(nivel_agua2) == HIGH) and (digitalRead(nivel_agua3) == HIGH)) {
@@ -395,8 +386,8 @@ void ciclo_delicado () {
 
     //Vaciando para centrifugar
 
-    for (int v = 0; v < 5; v++ ) {
-      v = 0;
+    while (true) {
+
       digitalWrite(vaciado, LOW);
 
       if ((digitalRead(nivel_agua1) == HIGH) and (digitalRead(nivel_agua2) == HIGH) and (digitalRead(nivel_agua3) == HIGH)) {
@@ -406,7 +397,7 @@ void ciclo_delicado () {
     }
 
 
-    delay(15000);
+    delay(5000);
 
     /*==============CENTRIFUGADO==============*/
 
@@ -417,12 +408,11 @@ void ciclo_delicado () {
     digitalWrite(velocidad2, LOW);
     digitalWrite(velocidad3, HIGH);
     digitalWrite(motor_reversa, HIGH);
-    delay(20000);//20seg
+    delay(20000);
     digitalWrite(velocidad1, HIGH);
     digitalWrite(velocidad2, HIGH);
     digitalWrite(velocidad3, LOW);
-    digitalWrite(motor_reversa, HIGH);
-    delay(160000);//160seg
+    delay(160000);
     digitalWrite(motor_reversa, LOW);
 
     delay(500);
@@ -452,24 +442,24 @@ void ciclo_delicado () {
   ========       CICLO FUERTE       ========
   ==========================================*/
 
-void ciclo_hard () {
+void ciclo_hard() {
 
 
   if (num_ciclo == 1 and digitalRead(start) == LOW) {
 
     delay(100);
-    while (digitalRead(start) == LOW);
+    while (digitalRead(start) == LOW)
+      ;
     delay(100);
 
     digitalWrite(door_lock, HIGH);
     digitalWrite(led_start, HIGH);
     digitalWrite(vaciado, HIGH);
 
-    for (int x = 0; x < 5; x++) {
+    while (true) {
 
       digitalWrite(agua_fria, HIGH);
       digitalWrite(agua_caliente, HIGH);
-      x = 0;
 
       if ((digitalRead(nivel_agua1) == LOW) and (digitalRead(nivel_agua2) == LOW) and (digitalRead(nivel_agua3) == LOW)) {
         digitalWrite(agua_fria, LOW);
@@ -497,15 +487,14 @@ void ciclo_hard () {
       delay(12000);
       digitalWrite(motor_reversa, LOW);
       delay(3000);
-
     }
 
     delay(3000);
 
     //Vaciando para enjuagar
 
-    for (int v = 0; v < 5; v++ ) {
-      v = 0;
+    while (true) {
+
       digitalWrite(vaciado, LOW);
 
       if ((digitalRead(nivel_agua1) == HIGH) and (digitalRead(nivel_agua2) == HIGH) and (digitalRead(nivel_agua3) == HIGH)) {
@@ -524,8 +513,8 @@ void ciclo_hard () {
 
     //Vaciando para centrifugar
 
-    for (int v = 0; v < 5; v++ ) {
-      v = 0;
+    while (true) {
+
       digitalWrite(vaciado, LOW);
 
       if ((digitalRead(nivel_agua1) == HIGH) and (digitalRead(nivel_agua2) == HIGH) and (digitalRead(nivel_agua3) == HIGH)) {
@@ -534,7 +523,7 @@ void ciclo_hard () {
     }
 
 
-    delay(15000);
+    delay(5000);
 
     /*==============CENTRIFUGADO==============*/
 
@@ -544,12 +533,11 @@ void ciclo_hard () {
     digitalWrite(velocidad2, LOW);
     digitalWrite(velocidad3, HIGH);
     digitalWrite(motor_reversa, HIGH);
-    delay(20000);//20seg
+    delay(20000);
     digitalWrite(velocidad1, HIGH);
     digitalWrite(velocidad2, HIGH);
     digitalWrite(velocidad3, LOW);
-    digitalWrite(motor_reversa, HIGH);
-    delay(160000);//160seg
+    delay(160000);
     digitalWrite(motor_reversa, LOW);
 
     delay(500);
@@ -613,7 +601,6 @@ void indicador_ciclo(int aux) {
       digitalWrite(led_indicador3, LOW);
       digitalWrite(led_indicador4, HIGH);
       break;
-
   }
   return;
 }
@@ -625,10 +612,9 @@ void indicador_ciclo(int aux) {
 
 void enjuague() {
 
-  for (int x = 0; x < 5; x++) {
+  while (true) {
 
     digitalWrite(agua_fria, HIGH);
-    x = 0;
 
     if ((digitalRead(nivel_agua1) == LOW) and (digitalRead(nivel_agua2) == LOW) and (digitalRead(nivel_agua3) == LOW)) {
       digitalWrite(agua_fria, LOW);
@@ -642,7 +628,7 @@ void enjuague() {
 
   //  for (int i = 0; i < 10 ; i++) {
 
-  for (int i = 0; i < 10 ; i++) {
+  for (int i = 0; i < 10; i++) {
 
     digitalWrite(motor_adelante, HIGH);
     delay(12000);
@@ -663,10 +649,9 @@ void enjuague() {
 void enjuague_delicado() {
 
 
-  for (int x = 0; x < 5; x++) {
+  while (true) {
 
     digitalWrite(agua_fria, HIGH);
-    x = 0;
 
     if ((digitalRead(nivel_agua1) == LOW) and (digitalRead(nivel_agua2) == LOW) and (digitalRead(nivel_agua3) == HIGH)) {
       digitalWrite(agua_fria, LOW);
@@ -680,7 +665,7 @@ void enjuague_delicado() {
 
   //for (int i = 0; i < 10 ; i++) {
 
-  for (int i = 0; i < 10 ; i++) {
+  for (int i = 0; i < 10; i++) {
 
     digitalWrite(motor_adelante, HIGH);
     delay(12000);
